@@ -8,19 +8,19 @@
 
 !SLIDE left
 
-## Reasons for compression
-
-* Mobile Device Client
-* Low Bandwidth Environment
-* Performance
-
-!SLIDE left
-
 ## Problem Environment
 
 * iOS app connecting to a Rails backed API
 * Large requests (response body ~ 230 kb)
 * Large downloads, hundreds of requests
+
+!SLIDE left
+
+## Reasons for compression
+
+* Mobile Device Client
+* Low Bandwidth Environment
+* Performance
 
 !SLIDE left
 
@@ -99,6 +99,7 @@ describe Rack::Deflater do
 end
 
 ```
+Test helper methods gist: [https://gist.github.com/calebwoods/5615260](https://gist.github.com/calebwoods/5615260)
 
 !SLIDE left
 

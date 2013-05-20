@@ -2,8 +2,8 @@
 <html>
   <head>
     <title>HTTP Compression in Rails</title>
-    <meta charset='utf-8' />
-    <meta content='width=1024, user-scalable=no' name='viewport' />
+    <meta charset='utf-8'>
+    <meta content='width=1024, user-scalable=no' name='viewport'>
     <!-- deck.js's core css -->
     <link href="deck.js/core/deck.core.css" rel="stylesheet" type="text/css"/>
     <!-- deck.js extension CSS files -->
@@ -25,155 +25,156 @@
   </head>
   <body class='deck-container keydown'>
     <section class='slide'>
-  <div class='spacer top'></div>
-  <div class='content'>
-    <h2>HTTP Compression in Rails</h2>
-
-<h3>Caleb Woods</h3>
-
-<h4>RoleModel Software</h4>
-  </div>
-  <div class='spacer bottom'></div>
-</section>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h2>HTTP Compression in Rails</h2>
+        
+        <h3>Caleb Woods</h3>
+        
+        <h4>RoleModel Software</h4>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
     <section class='left slide'>
-  <div class='spacer top'></div>
-  <div class='content'>
-    <h2>Reasons for compression</h2>
-
-<ul>
-<li>Mobile Device Client</li>
-<li>Low Bandwidth Environment</li>
-<li>Performance</li>
-</ul>
-  </div>
-  <div class='spacer bottom'></div>
-</section>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h2>Problem Environment</h2>
+        
+        <ul>
+        <li>iOS app connecting to a Rails backed API</li>
+        <li>Large requests (response body ~ 230 kb)</li>
+        <li>Large downloads, hundreds of requests</li>
+        </ul>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
     <section class='left slide'>
-        <div class='spacer top'></div>
-        <div class='content'>
-          <h2>Problem Environment</h2>
-          
-          <ul>
-          <li>iOS app connecting to a Rails backed API</li>
-          <li>Large requests (response body ~ 230 kb)</li>
-          <li>Large downloads, hundreds of requests</li>
-          </ul>
-        </div>
-        <div class='spacer bottom'></div>
-      </section>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h2>Reasons for compression</h2>
+        
+        <ul>
+        <li>Mobile Device Client</li>
+        <li>Low Bandwidth Environment</li>
+        <li>Performance</li>
+        </ul>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
     <section class='left slide'>
-  <div class='spacer top'></div>
-  <div class='content'>
-    <h2>Solution</h2>
-
-<h3>Gzip compression</h3>
-
-<ul>
-<li>Widely supported</li>
-<li>Easy to use in both Rails and iOS</li>
-</ul>
-  </div>
-  <div class='spacer bottom'></div>
-</section>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h2>Solution</h2>
+        
+        <h3>Gzip compression</h3>
+        
+        <ul>
+        <li>Widely supported</li>
+        <li>Easy to use in both Rails and iOS</li>
+        </ul>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
     <section class='left slide'>
-  <div class='spacer top'></div>
-  <div class='content'>
-    <h2>Gzipped Responses</h2>
-
-<h3>Rack Deflater</h3>
-
-<ul>
-<li>Built into Rack</li>
-<li><code>Accept-Encoding: gzip</code> header</li>
-</ul>
-
-
-<p><textarea class='code' display='none' mode='ruby'># application.rb&#x000A;&#x000A;config.middleware.use Rack::Deflater</textarea>
-</p>
-  </div>
-  <div class='spacer bottom'></div>
-</section>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h2>Gzipped Responses</h2>
+        
+        <h3>Rack Deflater</h3>
+        
+        <ul>
+        <li>Built into Rack</li>
+        <li><code>Accept-Encoding: gzip</code> header</li>
+        </ul>
+        
+        
+        <p><textarea class='code' display='none' mode='ruby'># application.rb&#x000A;&#x000A;config.middleware.use Rack::Deflater</textarea>
+    </p>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
     <section class='left slide'>
-  <div class='spacer top'></div>
-  <div class='content'>
-    <h2>Gzipped Requests</h2>
-
-<ul>
-<li>Custom Mime Type</li>
-<li>Use ActiveSupport::Gzip to decompress the request</li>
-</ul>
-
-
-<p><textarea class='code' display='none' mode='ruby'># config/initializers/mime_types.rb&#x000A;&#x000A;Mime::Type.register "gizp/json", :gzipjson&#x000A;&#x000A;ActionDispatch::ParamsParser::DEFAULT_PARSERS[Mime::Type.lookup('gzip/json')]=lambda do |raw_body|&#x000A;  body = ActiveSupport::Gzip.decompress(raw_body)&#x000A;  JSON.parse(body).with_indifferent_access&#x000A;end</textarea>
-</p>
-
-<!-- Sources -->
-
-
-<!-- http://schneems.com/post/16765433402/hi-im-looking-for-the-correct-way-to-convert-a-gzip -->
-
-
-<!-- http://stackoverflow.com/questions/8700332/rails-3-and-json-default-renderer-but-custom-mime-type -->
-  </div>
-  <div class='spacer bottom'></div>
-</section>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h2>Gzipped Requests</h2>
+        
+        <ul>
+        <li>Custom Mime Type</li>
+        <li>Use ActiveSupport::Gzip to decompress the request</li>
+        </ul>
+        
+        
+        <p><textarea class='code' display='none' mode='ruby'># config/initializers/mime_types.rb&#x000A;&#x000A;Mime::Type.register "gizp/json", :gzipjson&#x000A;&#x000A;ActionDispatch::ParamsParser::DEFAULT_PARSERS[Mime::Type.lookup('gzip/json')]=lambda do |raw_body|&#x000A;  body = ActiveSupport::Gzip.decompress(raw_body)&#x000A;  JSON.parse(body).with_indifferent_access&#x000A;end</textarea>
+    </p>
+        
+        <!-- Sources -->
+        
+        
+        <!-- http://schneems.com/post/16765433402/hi-im-looking-for-the-correct-way-to-convert-a-gzip -->
+        
+        
+        <!-- http://stackoverflow.com/questions/8700332/rails-3-and-json-default-renderer-but-custom-mime-type -->
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
     <section class='slide'>
-  <div class='spacer top'></div>
-  <div class='content'>
-    <h2>Testing</h2>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h2>Testing</h2>
+        
+        <p><textarea class='code' display='none' mode='ruby'># rack_deflater_spec.rb&#x000A;&#x000A;require 'spec_helper'&#x000A;&#x000A;describe Rack::Deflater do&#x000A;  include_context 'API'&#x000A;&#x000A;  it "encodes response if requested" do&#x000A;    api_get "posts"&#x000A;    response.headers["Content-Encoding"].should be_nil&#x000A;    content_length = response.headers["Content-Length"].to_i&#x000A;    api_get_gzipped "posts"&#x000A;    response.headers["Content-Length"].to_i.should <= content_length&#x000A;    response.headers["Content-Encoding"].should == "gzip"&#x000A;  end&#x000A;&#x000A;  it "accepts gzip encoded data" do&#x000A;    api_post_gziped "posts", post: { name: 'Compressed' }&#x000A;    response.headers["Content-Encoding"].should == "gzip"&#x000A;    response.status.should eq 201&#x000A;    decompressed_json_body.should include 'name' => 'Compressed'&#x000A;  end&#x000A;end</textarea>
     
-    <p><textarea class='code' display='none' mode='ruby'># rack_deflater_spec.rb&#x000A;&#x000A;require 'spec_helper'&#x000A;&#x000A;describe Rack::Deflater do&#x000A;  include_context 'API'&#x000A;&#x000A;  it "encodes response if requested" do&#x000A;    api_get "posts"&#x000A;    response.headers["Content-Encoding"].should be_nil&#x000A;    content_length = response.headers["Content-Length"].to_i&#x000A;    api_get_gzipped "posts"&#x000A;    response.headers["Content-Length"].to_i.should <= content_length&#x000A;    response.headers["Content-Encoding"].should == "gzip"&#x000A;  end&#x000A;&#x000A;  it "accepts gzip encoded data" do&#x000A;    api_post_gziped "posts", post: { name: 'Compressed' }&#x000A;    response.headers["Content-Encoding"].should == "gzip"&#x000A;    response.status.should eq 201&#x000A;    decompressed_json_body.should include 'name' => 'Compressed'&#x000A;  end&#x000A;end</textarea>
-</p>
-  </div>
-  <div class='spacer bottom'></div>
-</section>
+        Test helper methods gist: <a href="https://gist.github.com/calebwoods/5615260">https://gist.github.com/calebwoods/5615260</a></p>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
     <section class='left slide'>
-        <div class='spacer top'></div>
-        <div class='content'>
-          <h2>Results</h2>
-          
-          <ul>
-          <li>~90% response size decrease</li>
-          <li>40% speed increase iOS app large downloads</li>
-          </ul>
-        </div>
-        <div class='spacer bottom'></div>
-      </section>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h2>Results</h2>
+        
+        <ul>
+        <li>~90% response size decrease</li>
+        <li>40% speed increase iOS app large downloads</li>
+        </ul>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
     <section class='left slide'>
-  <div class='spacer top'></div>
-  <div class='content'>
-    <h2>iOS Tools</h2>
-
-<ul>
-<li><a href="https://github.com/AFNetworking/AFNetworking">AFNetworking</a>
-
-<ul>
-<li>Automatically decompresses Gzipped responses</li>
-</ul>
-</li>
-<li><a href="https://github.com/mattt/Godzippa">Godzippa</a>
-
-<ul>
-<li>Must be properly configured to used Gzip</li>
-</ul>
-</li>
-</ul>
-  </div>
-  <div class='spacer bottom'></div>
-</section>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h2>iOS Tools</h2>
+        
+        <ul>
+        <li><a href="https://github.com/AFNetworking/AFNetworking">AFNetworking</a>
+        
+        <ul>
+        <li>Automatically decompresses Gzipped responses</li>
+        </ul>
+        </li>
+        <li><a href="https://github.com/mattt/Godzippa">Godzippa</a>
+        
+        <ul>
+        <li>Must be properly configured to used Gzip</li>
+        </ul>
+        </li>
+        </ul>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
     <section class='left slide'>
-  <div class='spacer top'></div>
-  <div class='content'>
-    <h2>Feedback</h2>
-
-<ul>
-<li>Twitter: <a href="https://twitter.com/calebwoods">@calebwoods</a></li>
-<li>Repo: <a href="https://github.com/calebwoods/http-compression-rails">github.com/calebwoods/http-compression-rails</a></li>
-<li>Email: <a href="cmailto:caleb.woods@rolemodelsoftware.com">caleb.woods@rolemodelsoftware.com</a></li>
-</ul>
-  </div>
-  <div class='spacer bottom'></div>
-</section>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h2>Feedback</h2>
+        
+        <ul>
+        <li>Twitter: <a href="https://twitter.com/calebwoods">@calebwoods</a></li>
+        <li>Repo: <a href="https://github.com/calebwoods/http-compression-rails">github.com/calebwoods/http-compression-rails</a></li>
+        <li>Email: <a href="cmailto:caleb.woods@rolemodelsoftware.com">caleb.woods@rolemodelsoftware.com</a></li>
+        </ul>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
     <!-- deck.js navigation extension -->
     <a class='deck-prev-link' href='#' title='Previous'>&#8592;</a>
     <a class='deck-next-link' href='#' title='Next'>&#8594;</a>
